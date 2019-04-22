@@ -1,8 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import axios from "axios";
-import * as packager from "./packager";
+import axios from 'axios';
+import * as packager from './packager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -18,44 +18,44 @@ export async function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('extension.packsharp', async () => {
 		let csproj_input = await vscode.window.showOpenDialog(openDialogOptions);
 
-		let csproj: vscode.Uri;
+		let csproj: string;
 
 		if (csproj_input !== undefined) {
-			csproj = csproj_input[0];
+			csproj = csproj_input[0].fsPath;
 		}
 		else {
 			vscode.window.showErrorMessage('.csproj file not selected.');
-			return;
+			csproj = 'PROJECT';
 		}
 		
 		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
 
 		if (search_term_input === undefined || search_term_input === '') {
-			console.error("input was undefined or empty");
-			vscode.window.showErrorMessage("Input was empty or undefined.");
+			console.error('input was empty or undefined.');
+			vscode.window.showErrorMessage('Input was empty or undefined.');
 		}
 		else {
-			let response = await axios.get("https://www.nuget.org/packages?q=" + search_term_input);
+			let response = await axios.get(`https://www.nuget.org/packages?q=${search_term_input}`);
 			let sections = response.data.split(' <');
 
 			let packages : packager.Package[] = packager.getPackages(sections);
 			let packagesFoundMessage = packager.getPackagesFoundMessage(sections);
 
 			let package_pick_input = await vscode.window.showQuickPick(packages.map(p => p.name));
-			let terminal = vscode.window.createTerminal("packsharp");
+			let terminal = vscode.window.createTerminal('packsharp');
 			terminal.show();
-			terminal.sendText("dotnet add PROJECT package " + package_pick_input);
+			terminal.sendText(`dotnet add ${csproj} package ${package_pick_input}`);
 
 			vscode.window.showInformationMessage(packagesFoundMessage);
-			vscode.window.showInformationMessage("Visit https://nuget.org/packages?q=" + search_term_input + " for more information");
-		}		
+			vscode.window.showInformationMessage(`Visit https://nuget.org/packages?q=${search_term_input} for more information`);
+		}
 	});
 
 	context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { console.log("PackSharp deactivated"); }
+export function deactivate() { console.log('PackSharp deactivated'); }
 
 let openDialogOptions = {
 	'canSelectFiles': true,

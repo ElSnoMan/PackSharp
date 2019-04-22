@@ -15,12 +15,6 @@ export function getPackages(sections: string[]) {
 		}
 	});
 
-	console.log('\n[PACKAGE_NAME]     -->     [PACKAGE_URL]');
-	console.log('----------------------------------------');
-	packages.forEach(pkg => {
-		console.log(pkg.name + '  -->  ' + pkg.url);
-	});
-
 	return packages;
 }
 
@@ -61,12 +55,12 @@ export class Package {
 
 function getHrefFromXmlString(xml: string) {
     var href_match = xml.match('href="(.*?)"');
-    return href_match !== null ? href_match[1] : "href not found";
+    return href_match !== null ? href_match[1] : 'href not found';
 }
 
 function getNameFromXmlString(xml: string) {
     var name_match = xml.match('>(.*?)</a>');
-    return name_match !== null ? removeWbrTags(name_match[1]) : "name not found";
+    return name_match !== null ? removeWbrTags(name_match[1]) : 'name not found';
 }
 
 function removeWbrTags(str: string) {
