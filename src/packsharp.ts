@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Package } from './packager';
+import { Package } from './packer';
 
 export class Clean {
     static csproj(csproj: vscode.Uri[] | undefined) {

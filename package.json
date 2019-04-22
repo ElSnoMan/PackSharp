@@ -11,15 +11,21 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.packsharp",
+		"onCommand:extensions.packsharp.addName",
 		"onCommand:extension.packsharp.query",
-		"onCommand:extension.packsharp.remove"
+		"onCommand:extension.packsharp.remove",
+		"onCommand:extension.packsharp.removeName"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "extension.packsharp",
-				"title": "PackSharp: Add Package"
+				"title": "PackSharp: Add Package using File"
+			},
+			{
+				"command": "extension.packsharp.addName",
+				"title": "PackSharp: Add Package using Name"
 			},
 			{
 				"command": "extension.packsharp.query",
@@ -27,7 +33,11 @@
 			},
 			{
 				"command": "extension.packsharp.remove",
-				"title": "PackSharp: Remove Package"
+				"title": "PackSharp: Remove Package using File"
+			},
+			{	
+				"command": "extension.packsharp.removeName",
+				"title": "PackSharp: Remove Package using Name"
 			}
 		]
 	},

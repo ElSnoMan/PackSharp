@@ -3,7 +3,7 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import axios from 'axios';
-import * as packager from './packager';
+import * as packer from './packer';
 import * as packsharp from './packsharp';
 
 // this method is called when your extension is activated
@@ -26,13 +26,45 @@ export async function activate(context: vscode.ExtensionContext) {
 			let response = await axios.get(query);
 			let sections = response.data.split(' <');
 
-			let packages : packager.Package[] = packager.getPackages(sections);
-			let packagesFoundMessage = packager.getPackagesFoundMessage(sections);
+			let packages : packer.Package[] = packer.getPackages(sections);
+			let packagesFoundMessage = packer.getPackagesFoundMessage(sections);
 
 			let package_pick_input = await vscode.window.showQuickPick(packages.map(p => p.name));
 			packsharp.Terminal.send(`dotnet add ${csproj} package ${package_pick_input}`);
 
 			vscode.window.showInformationMessage(`${packagesFoundMessage}. Visit ${query} for more info`);
+		}
+		else {
+			vscode.window.showErrorMessage('Package Search was invalid.');
+		}
+	});
+
+	let add_name_disposable = vscode.commands.registerCommand('extension.packsharp.addName', async () => {
+		let project_name_input = await vscode.window.showInputBox({
+			'ignoreFocusOut': true,
+			'placeHolder': 'Project Name',
+			'prompt': 'Enter the project name you want to add the package to.'
+		});
+		let project_name = packsharp.Clean.search(project_name_input);
+		
+		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
+		let search_term = packsharp.Clean.search(search_term_input);
+
+		if (project_name !== 'invalid' || search_term !== 'invalid') {
+			let query = `https://www.nuget.org/packages?q=${search_term}`;
+			let response = await axios.get(query);
+			let sections = response.data.split(' <');
+
+			let packages : packer.Package[] = packer.getPackages(sections);
+			let packagesFoundMessage = packer.getPackagesFoundMessage(sections);
+
+			let package_pick_input = await vscode.window.showQuickPick(packages.map(p => p.name));
+			packsharp.Terminal.send(`dotnet add ${project_name} package ${package_pick_input}`);
+
+			vscode.window.showInformationMessage(`${packagesFoundMessage}. Visit ${query} for more info`);
+		}
+		else {
+			vscode.window.showErrorMessage('Project Name or Package Search was invalid.');
 		}
 	});
 
@@ -45,11 +77,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			let response = await axios.get(query);
 			let sections = response.data.split(' <');
 
-			let packages : packager.Package[] = packager.getPackages(sections);
-			let packagesFoundMessage = packager.getPackagesFoundMessage(sections);
+			let packages : packer.Package[] = packer.getPackages(sections);
+			let packagesFoundMessage = packer.getPackagesFoundMessage(sections);
 			packsharp.Terminal.printPackages(packages);
 
 			vscode.window.showInformationMessage(`${packagesFoundMessage}. Visit ${query} for more info`);
+		}
+		else {
+			vscode.window.showErrorMessage('Package Search was invalid.');
 		}
 	});
 
@@ -59,14 +94,33 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		let file = fs.readFileSync(csproj).toString();
 		let sections = file.split(' <');
-		let packages : packager.Package[] = packager.getCsprojPackages(sections);
+		let packages : packer.Package[] = packer.getCsprojPackages(sections);
 
 		let package_pick_input = await vscode.window.showQuickPick(packages.map(p => p.name));
 
 		packsharp.Terminal.send(`dotnet remove ${csproj} package ${package_pick_input}`);
 	});
 
-	context.subscriptions.push(add_disposable, query_disposable, remove_disposable);
+	let remove_name_disposable = vscode.commands.registerCommand('extension.packsharp.removeName', async () => {
+		let csproj_input = await vscode.window.showOpenDialog(openDialogOptions);
+		let csproj = packsharp.Clean.csproj(csproj_input);
+
+		let file = fs.readFileSync(csproj).toString();
+		let sections = file.split(' <');
+		let packages : packer.Package[] = packer.getCsprojPackages(sections);
+
+		let package_pick_input = await vscode.window.showQuickPick(packages.map(p => p.name));
+
+		packsharp.Terminal.send(`dotnet remove ${csproj} package ${package_pick_input}`);
+	});
+
+	context.subscriptions.push (
+		add_disposable,
+		add_name_disposable,
+		query_disposable,
+		remove_disposable,
+		remove_name_disposable
+	);
 }
 
 // this method is called when your extension is deactivated

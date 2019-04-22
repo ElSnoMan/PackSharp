@@ -14,14 +14,7 @@ export function getPackages(sections: string[]) {
 
 export function getCsprojPackages(sections: string[]) {
 	let packages : Package[] = [];
-
-	// for (let i = 0; i < sections.length; i++) {
-	// 	const section = sections[i];
-	// 	if (section.includes('ProjectReference')) {
-	// 		//
-	// 	}
-	// }
-
+	
 	sections.forEach((section: string) => {
 		if (section.includes('PackageReference')) {
 			let pkg = convertPackageReferenceToPackage(section);
