@@ -1,16 +1,30 @@
 
-export function convertToPackage(xml: string) {
-    let packageName = getNameFromXmlString(xml);
-    let packageUrl = getHrefFromXmlString(xml);
-    return new Package(packageName, packageUrl);
-}
-
 export function getPackages(sections: string[]) {
 	let packages : Package[] = [];
 
 	sections.forEach((section: string) => {
 		if (section.includes('a class="package-title"')) {
-			let pkg = convertToPackage(section);
+			let pkg = convertHtmlToPackage(section);
+			packages.push(pkg);
+		}
+	});
+
+	return packages;
+}
+
+export function getCsprojPackages(sections: string[]) {
+	let packages : Package[] = [];
+
+	// for (let i = 0; i < sections.length; i++) {
+	// 	const section = sections[i];
+	// 	if (section.includes('ProjectReference')) {
+	// 		//
+	// 	}
+	// }
+
+	sections.forEach((section: string) => {
+		if (section.includes('PackageReference')) {
+			let pkg = convertPackageReferenceToPackage(section);
 			packages.push(pkg);
 		}
 	});
@@ -36,13 +50,15 @@ export class Package {
 	/**
 	 * Simple representation of the packages returned by our query
 	 */
-	constructor(name: string, url: string) {
+	constructor(name: string, url: string = '', version: string = '') {
 		this._name = name;
 		this._url = url;
+		this._version = version;
 	}
 	
 	private _name : string;
 	private _url  : string;
+	private _version : string;
 
 	public get name() : string {
 		return this._name;
@@ -51,16 +67,30 @@ export class Package {
 	public get url() : string {
 		return this._url;
 	}
+
+	public get version() : string {
+		return this._version;
+	}
 }
 
-function getHrefFromXmlString(xml: string) {
-    var href_match = xml.match('href="(.*?)"');
-    return href_match !== null ? href_match[1] : 'href not found';
+function convertHtmlToPackage(xml: string) {
+	var name_match = xml.match('>(.*?)</a>');
+	let packageName = name_match !== null ? removeWbrTags(name_match[1]) : 'name not found';
+	
+	let href_match = xml.match('href="(.*?)"');
+	let packageUrl = href_match !== null ? href_match[1] : 'href not found';
+	
+    return new Package(packageName, packageUrl, '');
 }
 
-function getNameFromXmlString(xml: string) {
-    var name_match = xml.match('>(.*?)</a>');
-    return name_match !== null ? removeWbrTags(name_match[1]) : 'name not found';
+function convertPackageReferenceToPackage(xml: string) {
+	let name_match = xml.match('Include="(.*?)"');
+	let packageName = name_match !== null ? name_match[1] : 'name not found';
+	
+	let version_match = xml.match('Version="(.*?)"');
+	let packageVersion = version_match !== null ? version_match[1] : 'version not found';
+	
+    return new Package(packageName, '', packageVersion);
 }
 
 function removeWbrTags(str: string) {

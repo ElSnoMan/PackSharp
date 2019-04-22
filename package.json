@@ -10,7 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.packsharp"
+		"onCommand:extension.packsharp",
+		"onCommand:extension.packsharp.query",
+		"onCommand:extension.packsharp.remove"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -22,6 +24,10 @@
 			{
 				"command": "extension.packsharp.query",
 				"title": "PackSharp: Query Packages"
+			},
+			{
+				"command": "extension.packsharp.remove",
+				"title": "PackSharp: Remove Package"
 			}
 		]
 	},
