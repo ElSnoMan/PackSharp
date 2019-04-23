@@ -10,34 +10,24 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.packsharp",
-		"onCommand:extensions.packsharp.addName",
-		"onCommand:extension.packsharp.query",
-		"onCommand:extension.packsharp.remove",
-		"onCommand:extension.packsharp.removeName"
+		"onCommand:extension.packsharp.package.add",
+		"onCommand:extension.packsharp.package.remove",
+		"onCommand:extension.packsharp.query"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.packsharp",
-				"title": "PackSharp: Add Package using File"
+				"command": "extension.packsharp.package.add",
+				"title": "PackSharp: Add Package"
 			},
 			{
-				"command": "extension.packsharp.addName",
-				"title": "PackSharp: Add Package using Name"
+				"command": "extension.packsharp.package.remove",
+				"title": "PackSharp: Remove Package"
 			},
 			{
 				"command": "extension.packsharp.query",
 				"title": "PackSharp: Query Packages"
-			},
-			{
-				"command": "extension.packsharp.remove",
-				"title": "PackSharp: Remove Package using File"
-			},
-			{	
-				"command": "extension.packsharp.removeName",
-				"title": "PackSharp: Remove Package using Name"
 			}
 		]
 	},
@@ -56,6 +46,7 @@
 		"@types/mocha": "^2.2.42"
 	},
 	"dependencies": {
-		"axios": "^0.18.0"
+		"axios": "^0.18.0",
+		"glob": "^7.1.3"
 	}
 }

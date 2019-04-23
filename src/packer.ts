@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 
 export function getPackages(sections: string[]) {
 	let packages : Package[] = [];
@@ -39,10 +40,29 @@ export function getPackagesFoundMessage(sections: string[]) {
     return failure;
 }
 
+export class CsProject {
+	constructor(filepath: string) {
+		this._filepath = filepath;
+	}
+
+	private _filepath : string;
+
+	public get filepath() : string {
+		return this._filepath;
+	}
+
+	public get name() : string {
+		let name_match = this.filepath.split('/').pop().match('(.*?).csproj');
+		return name_match !== null ? name_match[1] : 'invalid';
+	}
+
+	public get packages() : Package[] {
+		let sections = fs.readFileSync(this._filepath).toString().split(' <');
+		return getCsprojPackages(sections);
+	}
+}
+
 export class Package {
-	/**
-	 * Simple representation of the packages returned by our query
-	 */
 	constructor(name: string, url: string = '', version: string = '') {
 		this._name = name;
 		this._url = url;
