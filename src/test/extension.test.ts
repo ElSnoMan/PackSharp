@@ -1,29 +1,44 @@
 //
 // Note: This example test is leveraging the Mocha test framework.
 // Please refer to their documentation on https://mochajs.org/ for help.
-//
+// https://code.visualstudio.com/api/working-with-extensions/testing-extension
 
-// The module 'assert' provides assertion methods from node
+import * as fs from 'fs';
 import * as assert from 'assert';
-import axios from "axios";
+import axios from 'axios';
+import * as packer from '../packer';
+import * as packsharp from '../packsharp';
+import * as test_object from './test-objects';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-// import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
-
-// Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", function () {
+});
 
-    // Defines a Mocha unit test
-    test("Something 1", function() {
-        assert.equal(-1, [1, 2, 3].indexOf(5));
-        assert.equal(-1, [1, 2, 3].indexOf(0));
+suite('Packer Tests', () => {
+    test('convert html to Package', () => {
+        let sections = test_object.microsoft_package_html.split(' <');
+        let packages : packer.Package[] = packer.getPackages(sections);
+
+        assert.equal(packages.length, 1);
+        assert.equal(packages[0].name, 'Selenium.WebDriver');
+        assert.equal(packages[0].url, '/packages/Selenium.WebDriver/4.0.0-alpha01');
+        assert.equal(packages[0].version, '');
     });
 
-    test("HTTP Request", () => {
-        axios.get("https://www.nuget.org/packages?q=selenium")
-        .then(data => console.log(data))
-        .catch(error => console.log(error));
+    test('convert .csproj packages to Package', () => {
+        let sections = test_object.csproj_file.split(' <');
+        let packages : packer.Package[] = packer.getCsprojPackages(sections);
+
+        assert.equal(packages.length, 4);
+        assert.equal(packages[0].name, 'nunit');
+        assert.equal(packages[0].url, '');
+        assert.equal(packages[0].version, '3.10.1');
+    });
+
+    test('get Packages Found Message from html', () => {
+        let sections = test_object.microsoft_header_html.split(' <');
+        let message = packer.getPackagesFoundMessage(sections);
+
+        assert.equal(message.includes('169 packages'), true, message);
+        assert.equal(message.includes('returned for selenium.webdriver'), true, message);
     });
 });

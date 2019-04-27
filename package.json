@@ -12,7 +12,9 @@
 	"activationEvents": [
 		"onCommand:extension.packsharp.package.add",
 		"onCommand:extension.packsharp.package.remove",
-		"onCommand:extension.packsharp.query"
+		"onCommand:extension.packsharp.package.query",
+		"onCommand:extension.packsharp.reference.add",
+		"onCommand:extension.packsharp.reference.remove"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -26,8 +28,16 @@
 				"title": "PackSharp: Remove Package"
 			},
 			{
-				"command": "extension.packsharp.query",
+				"command": "extension.packsharp.package.query",
 				"title": "PackSharp: Query Packages"
+			},
+			{
+				"command": "extension.packsharp.reference.add",
+				"title": "PackSharp: Add Project Reference"
+			},
+			{
+				"command": "extension.packsharp.reference.remove",
+				"title": "PackSharp: Remove Project Reference"
 			}
 		]
 	},
