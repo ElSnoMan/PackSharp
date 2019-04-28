@@ -1,10 +1,11 @@
-# packsharp README
+# Welcome to PackSharp
 
-This is the README for your extension "packsharp". After writing up a brief description, we recommend including the following sections.
+PackSharp is an extension that makes working with .NET Core's CLI commands for Packages and Projects easier.
 
 ## Features
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+\!\[Packsharp Commands in Command Palette\]\(images/packsharp-commands.png\)
 
 For example if there is an image subfolder under your extension project workspace:
 
