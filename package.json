@@ -1,8 +1,10 @@
 {
 	"name": "packsharp",
 	"displayName": "PackSharp",
-	"description": "User-friendly package manager for Nugets in .NET Core",
-	"version": "0.0.1",
+	"description": "User-friendly package manager for Nuget Packages and Project References in .NET Core",
+	"version": "1.0.0",
+	"author": { "name": "Carlos Kidman", "email": "carlos@qap.dev", "url": "https://qap.dev" },
+	"icon": "images/packsharp-icon.png",
 	"engines": {
 		"vscode": "^1.33.0"
 	},
