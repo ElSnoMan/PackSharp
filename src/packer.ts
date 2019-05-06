@@ -1,13 +1,33 @@
+import { workspace } from 'vscode';
 import * as fs from 'fs';
+const glob = require('glob');
+var JSSoup = require('jssoup').default;
 
+/**
+ * Gets the `.csproj` files that are in the current workspace.
+ * @returns An array of the found CsProjects.
+ */
+export function getWorkspaceCsProjects() : CsProject[] {
+	let csprojects : CsProject[] = [];
+
+	glob.sync(workspace.rootPath + '/**/*.csproj', {}).forEach((file: string) => {
+		csprojects.push(new CsProject(file));
+	});
+
+	return csprojects;
+}
+
+/**
+ * Representation of a `.csproj` file and its contents.
+ */
 export class CsProject {
 	constructor(filepath: string) {
 		this._filepath = filepath;
-		this._sections = fs.readFileSync(this._filepath).toString().split(' <');
+		this._xml = fs.readFileSync(this._filepath).toString();
 	}
 
 	private _filepath : string;
-	private _sections : string[];
+	private _xml : string;
 
 	public get filepath() : string {
 		return this._filepath;
@@ -19,22 +39,26 @@ export class CsProject {
 	}
 
 	public get packages() : Package[] {
-		return getCsprojPackages(this._sections);
+		return getCsprojPackages(this._xml);
 	}
 
 	public get references() : ProjectReference[] {
-		return getCsprojProjectReferences(this._sections);
+		return getCsprojProjectReferences(this._xml);
 	}
 }
 
+/**
+ * Representation of a `Package`.
+ * @example from `.csproj`: <PackageReference Include="CommandLineParser" Version="1.9.71" />
+ * @example from `HTML`: <a class="package-title" href="/packages/selenium">Selenium.<wbr>WebDriver</a>
+ */
 export class Package {
-	// Example: <PackageReference Include="CommandLineParser" Version="1.9.71" />
 	constructor(name: string, url: string = '', version: string = '') {
 		this._name = name;
 		this._url = url;
 		this._version = version;
 	}
-	
+
 	private _name : string;
 	private _url  : string;
 	private _version : string;
@@ -52,8 +76,11 @@ export class Package {
 	}
 }
 
+/**
+ * Representation of a `ProjectReference`.
+ * @example <ProjectReference Include="..\Framework\Framework.csproj" />
+ */
 export class ProjectReference {
-	// Example: <ProjectReference Include="..\Framework\Framework.csproj" />
 	constructor(filepath: string = null, name: string = null) {
 		this._filepath = filepath;
 		this._name = name;
@@ -71,98 +98,95 @@ export class ProjectReference {
 	}
 }
 
-export function getPackages(sections: string[]) {
+/**
+ * Get the `Package` objects from an `HTML` string.
+ * @param html The `HTML` string to parse the Packages from.
+ */
+export function getPackages(html: string) : Package[] {
+	// Example from HTML: <a class="package-title" href="/packages/selenium">Selenium.<wbr>WebDriver</a>
+	let soup = new JSSoup(html);
+	let a_elements = soup.findAll('a');
 	let packages : Package[] = [];
 
-	sections.forEach((section: string) => {
-		if (section.includes('a class="package-title"')) {
-			let pkg = convertHtmlToPackage(section);
-			packages.push(pkg);
+	a_elements.forEach((tag: any) => {
+		if (tag.attrs.class === 'package-title') {
+			let name = removeWbrTags(tag.text);
+			let url = tag.attrs.href;
+			packages.push(new Package(name, url));
 		}
 	});
 
 	return packages;
 }
 
-export function getCsprojPackages(sections: string[]) {
+/**
+ * Get the "x Packages Found" header message from an `HTML` string.
+ * @param html The `HTML` string to parse the Found Message from.
+ */
+export function getPackagesFoundMessage(html: string) : string {
+	let soup = new JSSoup(html);
+	let header = soup.find("h1");
+	return header.text;
+}
+
+/**
+ * Get the `PackageReference` objects from a `.csproj` file.
+ * @param xml The `.csproj` file as an `XML` string.
+ */
+export function getCsprojPackages(xml: string) : Package[] {
+	// Example from .csproj file: <PackageReference Include="CommandLineParser" Version="1.9.71" />
+	let soup = new JSSoup(xml);
+	let references = soup.findAll('PackageReference');
 	let packages : Package[] = [];
-	
-	sections.forEach((section: string) => {
-		if (section.includes('PackageReference')) {
-			let pkg = convertPackageReferenceToObject(section);
-			packages.push(pkg);
-		}
+
+	references.forEach((tag: any) => {
+		let name = tag.attrs.Include;
+		let version = tag.attrs.Version;
+		packages.push(new Package(name, '', version));
 	});
 
 	return packages;
 }
 
-export function getCsprojProjectReferences(sections: string[]) {
-	let references : ProjectReference[] = [];
+/**
+ * Get the `ProjectReference` objects from a `.csproj` file.
+ * @param xml The `.csproj` file as an `XML` string.
+ */
+export function getCsprojProjectReferences(xml: string) : ProjectReference[] {
+	// Example: <ProjectReference Include="..\Framework\Framework.csproj" />
+	let soup = new JSSoup(xml);
+	let references = soup.findAll('ProjectReference');
+	let project_references : ProjectReference[] = [];
 
-	sections.forEach((section: string) => {
-		if (section.includes('ProjectReference')) {
-			let ref = convertProjectReferenceToObject(section);
-			references.push(ref);
-		}
+	references.forEach((tag: any) => {
+		let filepath = tag.attrs.Include.substr(3);
+		filepath = filepath.replace('\\', '/');
+
+		let name_match = filepath.split('/').pop().match('(.*?).csproj');
+		let name = name_match !== null ? name_match[1] : 'error - name not found';
+		project_references.push(new ProjectReference(filepath, name));
 	});
 
-	return references;
+	return project_references;
 }
 
-export function getPackagesFoundMessage(sections: string[]) {
-    for (let i = 0; i < sections.length; i++) {
-        if (sections[i].includes('h1 role="alert"')) {
-			let section = sections[i].split('">')[1].trim();
-			let message = removeWbrTags(section);
-			return message;
-        }
-	}
-	
-	let failure = 'Packages Found Message not found';
-	console.error(failure);
-	
-    return failure;
-}
-
-export function removeCsProjectFromArray(arr: CsProject[], csproject: CsProject) {
+/**
+ * Remove the specified `CsProject` from the array.
+ * @param arr The array of `CsProject`.
+ * @param csproject The `CsProject` to remove from the array.
+ */
+export function removeCsProjectFromArray(arr: CsProject[], csproject: CsProject) : CsProject[] {
     return arr.filter(elem => {
         return elem !== csproject;
     });
 }
 
-function convertHtmlToPackage(xml: string) : Package {
-	var name_match = xml.match('>(.*?)</a>');
-	let packageName = name_match !== null ? removeWbrTags(name_match[1]) : 'error - name not found';
-	
-	let href_match = xml.match('href="(.*?)"');
-	let packageUrl = href_match !== null ? href_match[1] : 'error - href not found';
-	
-    return new Package(packageName, packageUrl, '');
-}
-
-function convertPackageReferenceToObject(xml: string) : Package {
-	let name_match = xml.match('Include="(.*?)"');
-	let packageName = name_match !== null ? name_match[1] : 'error - name not found';
-	
-	let version_match = xml.match('Version="(.*?)"');
-	let packageVersion = version_match !== null ? version_match[1] : 'error - version not found';
-	
-    return new Package(packageName, '', packageVersion);
-}
-
-function convertProjectReferenceToObject(xml: string) : ProjectReference {
-	let filepath_match = xml.match('Include="..\(.*?)"');
-	let filepath = filepath_match !== null ? filepath_match[1] : 'error - file path not found.';
-	filepath = filepath.substr(1).replace('\\', '/');
-
-	let name_match = filepath.split('/').pop().match('(.*?).csproj');
-	let name = name_match !== null ? name_match[1] : 'error - name not found';
-	
-    return new ProjectReference(filepath, name);
-}
-
-function removeWbrTags(str: string) {
+/**
+ * Remove all `<wbr>` tags from a string.
+ * This "cleaning" is required to parse the string to `XML` correctly.
+ * @param str The string to remove the `<wbr>` tags from.
+ */
+export function removeWbrTags(str: string) : string {
 	var cleaned_string = str;
 	var tagCount = (cleaned_string.match(/\<wbr/g) || []).length;
 

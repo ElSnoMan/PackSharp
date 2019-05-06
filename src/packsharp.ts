@@ -2,28 +2,30 @@ import * as vscode from 'vscode';
 import { Package } from './packer';
 
 export class Clean {
-    static csproj(csproj: vscode.Uri[] | undefined) {
-        if (csproj !== undefined) {
-			return csproj[0].fsPath;
-		}
-		else {
-			vscode.window.showErrorMessage('.csproj file not selected.');
-			return 'PROJECT';
-        }
-    }
-
-    static search(term: string | undefined) {
+    /**
+     * If undefined or empty, return 'invalid', else return the term.
+     * @param term The Search Term input from the user.
+     */
+    static search(term: string | undefined) : string {
         if (term === undefined || term === '') {
-            vscode.window.showErrorMessage('Input was empty or undefined.');
+            vscode.window.showErrorMessage('Search term was empty or undefined.');
             return 'invalid';
         }
-        
+
         return term;
     }
 }
 
+/**
+ * PackSharp uses its own terminal
+ * to isolate commands to a single session.
+ */
 export class Terminal {
-    static get(preserveFocus?: boolean | undefined) {
+    /**
+     * Returns the `packsharp` terminal if it exists, or creates a new terminal.
+     * @param preserveFocus When `true`, the terminal will not take focus.
+     */
+    static get(preserveFocus?: boolean | undefined) : vscode.Terminal {
         let terminal : vscode.Terminal;
         let existing = vscode.window.terminals.find(t => t.name === 'packsharp');
 
@@ -33,12 +35,20 @@ export class Terminal {
         else {
             terminal = existing;
         }
-    
+
         terminal.show(preserveFocus);
         return terminal;
     }
 
-    static printPackages(packages: Package[]) {
+    /**
+     * Send a string command to the `packsharp` terminal.
+     * @param text The command to execute in the terminal.
+     */
+    static send(text: string) : void {
+        this.get().sendText(text);
+    }
+
+    static printPackages(packages: Package[]) : void {
         let names = packages.map(p => `${p.name}  -->  https://nuget.org${p.url}`);
         let header = 'echo "\n\n\n[PACKAGE_NAME]     -->     [PACKAGE_URL]';
         let separator = '\n----------------------------------------\n';
@@ -46,7 +56,16 @@ export class Terminal {
         this.get().sendText(message);
     }
 
-    static send(text: string) {
-        this.get().sendText(text);
+    /**
+     * Send `chmod` command to turn the driver text file to an executable.
+     * @param driverDirectory The directory that has the driver text file.
+     */
+    static chmodDriverZip(driverDirectory: string) : void {
+        if (process.platform === 'darwin' || 'linux') {
+			this.send(`chmod +x ${driverDirectory}/chromedriver`);
+		}
+		if (process.platform === 'win32') {
+			this.send(`chmod +x ${driverDirectory}/chromedriver.exe`);
+		}
     }
 }
