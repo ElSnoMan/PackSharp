@@ -63,7 +63,7 @@ export const microsoft_package_html : string = `<article class="package" role="l
 export const microsoft_header_html = `<div class="row-heading clearfix">
 <div class="cell-heading">
     <h1 role="alert">
-                169 packages 
+                169 packages
             returned for selenium.<wbr>webdriver
     </h1>
 </div>
@@ -94,7 +94,7 @@ export const csproj_file : string = `<Project Sdk="Microsoft.NET.Sdk">
 </ItemGroup>
 
 <ItemGroup>
-  <ProjectReference Include="..\PackSharp\PackSharp.csproj" />
+  <ProjectReference Include="..\\PackSharp\\PackSharp.csproj" />
 </ItemGroup>
 
 </Project>`;
