@@ -13,6 +13,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			{ placeHolder: 'The Project to add the Package to'}
 		);
 
+		let csproj = csprojects.find(p => p.name === project_target_input);
+
 		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
 		let search_term = packsharp.Clean.search(search_term_input);
 
@@ -28,9 +30,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				packages.map(p => p.name),
 				{ placeHolder: 'The Package to add'}
 			);
-		
-			packsharp.Terminal.send(`dotnet add ${project_target_input} package ${package_target_input}`);
-			vscode.window.showInformationMessage(`${packagesFoundMessage}. Visit ${query} for more info`);
+
+			packsharp.Terminal.send(`dotnet add ${csproj.filepath} package ${package_target_input}`);
 		}
 	});
 
@@ -48,7 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			{ placeHolder: 'The Package to remove'}
 		);
 
-		packsharp.Terminal.send(`dotnet remove ${project_target_input} package ${package_pick_input}`);
+		packsharp.Terminal.send(`dotnet remove ${csproj.filepath} package ${package_pick_input}`);
 	});
 
 	let query_packages_disposable = vscode.commands.registerCommand('extension.packsharp.package.query', async () => {
@@ -84,7 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			{ placeHolder: 'The Project Reference to add' }
 		);
 
-		packsharp.Terminal.send(`dotnet add ${project_target_input} reference ${project_source_input}`);
+		packsharp.Terminal.send(`dotnet add ${csproj.filepath} reference ${project_source_input}`);
 	});
 
 	let remove_reference_disposable = vscode.commands.registerCommand('extension.packsharp.reference.remove', async () => {
@@ -103,7 +104,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		let reference = csproj.references.find(ref => ref.name === project_ref_to_remove);
 
-		packsharp.Terminal.send(`dotnet remove ${project_target_input} reference ${reference.filepath}`);
+		packsharp.Terminal.send(`dotnet remove ${csproj.filepath} reference ${reference.filepath}`);
 	});
 
 	let bootstrap_selenium_disposable = vscode.commands.registerCommand('extension.packsharp.bootstrap.selenium', async () => {
@@ -113,8 +114,10 @@ export async function activate(context: vscode.ExtensionContext) {
 			{ placeHolder: 'The Project to add Selenium to' }
 		);
 
-		packsharp.Terminal.send(`dotnet add ${project_target_input} package Selenium.WebDriver`);
-		packsharp.Terminal.send(`dotnet add ${project_target_input} package Selenium.Support`);
+		let csproj = csprojects.find(p => p.name === project_target_input);
+
+		packsharp.Terminal.send(`dotnet add ${csproj.filepath} package Selenium.WebDriver`);
+		packsharp.Terminal.send(`dotnet add ${csproj.filepath} package Selenium.Support`);
 
 		let driver_directory = vscode.workspace.rootPath + '/_drivers';
 		let version_downloaded = await selenium.downloadChromeTo(driver_directory);

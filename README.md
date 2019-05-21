@@ -84,6 +84,8 @@ This one command will bootstrap Selenium to the selected Project. It's never bee
 
 * PackSharp is mainly tested in Unix environments. I will be making progress to ensure testing happens on Windows as well, but I expect there to be some issues there. Please report the issues on my email or on the repo.
 
+* PackSharp runs the `dotnet` commands from your **Workspace Root**. Keep this in mind as you use the CLI commands.
+
 ## Release Notes
 
 With the initial release of PackSharp, all questions and feedback are welcome! Please reach out to me on the GitHub repo or on the following platforms:
@@ -98,3 +100,7 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 ### 1.1.0
 
 * Bootstrap Selenium in a single command
+
+### 1.2.0
+
+* Use Project filepaths instead of just their name.

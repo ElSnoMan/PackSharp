@@ -26,3 +26,12 @@ This makes getting a Selenium project started is even easier than before!
 - bootstrap.selenium command
 - Docstrings
 - More test coverage
+
+## [1.2.0] - 2019-05-20
+Use Project filepaths instead of just their name.
+This eliminates the pathing issues some users were running into.
+
+### Added
+- `dotnet` commands will now use the <filepath>.csproj
+- Example: `$ dotnet add /Users/Carlos/PackSharp/PackSharp.Tests.csproj package Newtonsoft.Json`
+- Instead of: `$ dotnet add PackSharp.Tests package Newtonsoft.Json`
