@@ -18,6 +18,20 @@ export function getWorkspaceCsProjects() : CsProject[] {
 }
 
 /**
+ * Gets the `.sln` files that are in the current workspace.
+ * @returns An array of the found Solutions.
+ */
+export function getWorkspaceSolutions() : Solution[] {
+	let solutions : Solution[] = [];
+
+	glob.sync(workspace.rootPath + '/**/*.csproj', {}).forEach((file: string) => {
+		solutions.push(new Solution(file));
+	});
+
+	return solutions;
+}
+
+/**
  * Representation of a `.csproj` file and its contents.
  */
 export class CsProject {
@@ -44,6 +58,26 @@ export class CsProject {
 
 	public get references() : ProjectReference[] {
 		return getCsprojProjectReferences(this._xml);
+	}
+}
+
+/**
+ * Representatin of a `.sln` file.
+ */
+export class Solution {
+	constructor(filepath: string) {
+		this._filepath = filepath;
+	}
+
+	private _filepath : string;
+
+	public get filepath() : string {
+		return this._filepath;
+	}
+
+	public get name() : string {
+		let name_match = this._filepath.split('/').pop().match('(.*?).sln');
+		return name_match !== null ? name_match[1] : 'invalid';
 	}
 }
 
@@ -198,3 +232,111 @@ export function removeWbrTags(str: string) : string {
 
 	return cleaned_string;
 }
+
+export const projectTemplates = [
+	{
+		'template': 'Console Application',
+		'shortName': 'console',
+		'tag': 'Common/Console'
+	},
+	{
+		'template': 'Class Library',
+		'shortName': 'classlib',
+		'tag': 'Common/Console'
+	},
+	{
+		'template': 'Unit Test Project',
+		'shortName': 'mstest',
+		'tag': 'Test/MSTest'
+	},
+	{
+		'template': 'NUnit 3 Test Project',
+		'shortName': 'nunit',
+		'tag': 'Test/NUnit'
+	},
+	{
+		'template': 'xUnit Test Project',
+		'shortName': 'xunit',
+		'tag': 'Test/xUnit'
+	},
+	{
+		'template': 'Razor Page',
+		'shortName': 'page',
+		'tag': 'Web/ASP.NET'
+	},
+	{
+		'template': 'MVC ViewImports',
+		'shortName': 'viewimports',
+		'tag': 'Web/ASP.NET'
+	},
+	{
+		'template': 'MVC ViewStart',
+		'shortName': 'viewstart',
+		'tag': 'Web/ASP.NET'
+	},
+	{
+		'template': 'ASP.NET Core Empty',
+		'shortName': 'web',
+		'tag': 'Web/Empty'
+	},
+	{
+		'template': 'ASP.NET Core Web App (MVC)',
+		'shortName': 'mvc',
+		'tag': 'Web/MVC'
+	},
+	{
+		'template': 'ASP.NET Core Web App',
+		'shortName': 'webapp, razor',
+		'tag': 'Web/MVC/Razor Pages'
+	},
+	{
+		'template': 'Class Library',
+		'shortName': 'classlib',
+		'tag': 'Common/Console'
+	},
+	{
+		'template': 'ASP.NET Core with Angular',
+		'shortName': 'angular',
+		'tag': 'Web/MVC/SPA'
+	},
+	{
+		'template': 'ASP.NET Core with React.js',
+		'shortName': 'react',
+		'tag': 'Web/MVC/SPA'
+	},
+	{
+		'template': 'ASP.NET Core with React.js and Redux',
+		'shortName': 'reactredux',
+		'tag': 'Web/MVC/SPA'
+	},
+	{
+		'template': 'Razor Class Library',
+		'shortName': 'razorclasslib',
+		'tag': 'Web/Razor/Library/Razor Class Library'
+	},
+	{
+		'template': 'ASP.NET Core Web API',
+		'shortName': 'webapi',
+		'tag': 'Web/WebAPI'
+	},
+	{
+		'template': 'global.json file',
+		'shortName': 'globaljson',
+		'tag': 'Config'
+	},
+	{
+		'template': 'NuGet Config',
+		'shortName': 'nugetconfig',
+		'tag': 'Config'
+	},
+	{
+		'template': 'Web Config',
+		'shortName': 'webconfig',
+		'tag': 'Config'
+	},
+	{
+		'template': 'Solution File',
+		'shortName': 'sln',
+		'tag': 'Solution'
+	}
+];

@@ -16,7 +16,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let csproj = csprojects.find(p => p.name === project_target_input);
 
 		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
-		let search_term = packsharp.Clean.search(search_term_input);
+		let search_term = packsharp.Clean.input(search_term_input);
 
 		if (search_term !== 'invalid') {
 			let query = `https://www.nuget.org/packages?q=${search_term}`;
@@ -54,7 +54,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	let query_packages_disposable = vscode.commands.registerCommand('extension.packsharp.package.query', async () => {
 		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
-		let search_term = packsharp.Clean.search(search_term_input);
+		let search_term = packsharp.Clean.input(search_term_input);
 
 		if (search_term !== 'invalid') {
 			let query = `https://www.nuget.org/packages?q=${search_term}`;
@@ -129,13 +129,36 @@ export async function activate(context: vscode.ExtensionContext) {
 		packsharp.Terminal.chmodDriverZip(driver_directory);
 	});
 
+	let new_template_disposable = vscode.commands.registerCommand('extension.packsharp.template.new', async () => {
+		let template_target_input = await vscode.window.showQuickPick(
+			packer.projectTemplates.map(pt => pt.template),
+			{ placeHolder: 'Select the Project Template', matchOnDescription: true }
+		);
+
+		let project_name_input = await vscode.window.showInputBox({
+			placeHolder: 'Example: PackSharp',
+			prompt: 'Enter the name you want to give the Project'
+		});
+
+		let template = packer.projectTemplates.find(pt => pt.template === template_target_input);
+		let project_name = packsharp.Clean.input(project_name_input);
+
+		if (project_name !== 'invalid') {
+			packsharp.Terminal.send(`dotnet new ${template.shortName} --name ${project_name}`);
+		}
+		else {
+			packsharp.Terminal.send(`dotnet new ${template.shortName}`);
+		}
+	});
+
 	context.subscriptions.push (
 		add_package_disposable,
 		remove_package_disposable,
 		add_reference_disposable,
 		remove_reference_disposable,
 		query_packages_disposable,
-		bootstrap_selenium_disposable
+		bootstrap_selenium_disposable,
+		new_template_disposable
 	);
 }
 

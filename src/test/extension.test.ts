@@ -23,15 +23,15 @@ suite('PackSharp', () => {
     });
     suite('packsharp.Clean.search', () => {
         test('clean undefined search term', () => {
-            assert.equal('invalid', packsharp.Clean.search(undefined));
+            assert.equal('invalid', packsharp.Clean.input(undefined));
         });
 
         test('clean empty search term', () => {
-            assert.equal('invalid', packsharp.Clean.search(''));
+            assert.equal('invalid', packsharp.Clean.input(''));
         });
 
         test('clean valid search term', () => {
-            assert.equal('mocha', packsharp.Clean.search('mocha'));
+            assert.equal('mocha', packsharp.Clean.input('mocha'));
         });
     });
 });

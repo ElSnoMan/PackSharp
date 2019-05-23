@@ -70,10 +70,18 @@ This one command will bootstrap Selenium to the selected Project. It's never bee
         * Just point the `ChromeDriver()` to `/_drivers` and you're good to go!
 
 ----
+## template.new
+Create a Project, Config, or Solution with a simple command.
+The dotnet templates can be found at their [dotnet new](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new) documentation.
+
+* Using Palette Command => **PackSharp: Create New Project**
+* Turns CLI Command => `$ dotnet new [TEMPLATE] --name [NAME]`
+
+----
 ## Requirements
 
 * This is a VS Code extension, so it requires VS Code.
-* .NET Core v2.1 or greater
+* .NET Core v2.2 or greater
 * (Recommended) C# Extension installed
 
 ## Known Issues
@@ -84,7 +92,7 @@ This one command will bootstrap Selenium to the selected Project. It's never bee
 
 * PackSharp is mainly tested in Unix environments. I will be making progress to ensure testing happens on Windows as well, but I expect there to be some issues there. Please report the issues on my email or on the repo.
 
-* PackSharp runs the `dotnet` commands from your **Workspace Root**. Keep this in mind as you use the CLI commands.
+* PackSharp runs the `dotnet` commands from your **Workspace Root**. Keep this in mind as you use the Palette Commands. You may need to run the commands in the CLI using your file structure.
 
 ## Release Notes
 

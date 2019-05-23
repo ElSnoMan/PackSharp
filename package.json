@@ -26,7 +26,8 @@
 		"onCommand:extension.packsharp.package.query",
 		"onCommand:extension.packsharp.reference.add",
 		"onCommand:extension.packsharp.reference.remove",
-		"onCommand:extension.packsharp.bootstrap.selenium"
+		"onCommand:extension.packsharp.bootstrap.selenium",
+		"onCommand:extension.packsharp.template.new"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -54,6 +55,10 @@
 			{
 				"command": "extension.packsharp.bootstrap.selenium",
 				"title": "PackSharp: Bootstrap Selenium"
+			},
+			{
+				"command": "extension.packsharp.template.new",
+				"title": "PackSharp: Create New Project"
 			}
 		]
 	},
