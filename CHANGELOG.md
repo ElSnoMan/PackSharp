@@ -27,7 +27,7 @@ This makes getting a Selenium project started is even easier than before!
 - Docstrings
 - More test coverage
 
-## [1.2.0] - 2019-05-20
+## [1.2.1] - 2019-05-20
 Use Project filepaths instead of just their name.
 This eliminates the pathing issues some users were running into.
 
@@ -35,3 +35,11 @@ This eliminates the pathing issues some users were running into.
 - `dotnet` commands will now use the <filepath>.csproj
 - Example: `$ dotnet add /Users/Carlos/PackSharp/PackSharp.Tests.csproj package Newtonsoft.Json`
 - Instead of: `$ dotnet add PackSharp.Tests package Newtonsoft.Json`
+
+## [1.3.0] - 2019-05-23
+New command to add a new template.
+Now you can quickly make a Testing Project, ASP.NET Core Project, Solution or WebConfig files, and more!
+
+### Added
+- New Palette Command => `PackSharp: Create New Project`
+- Uses dotnet's templates to create what you need.

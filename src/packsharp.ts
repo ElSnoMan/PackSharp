@@ -3,16 +3,16 @@ import { Package } from './packer';
 
 export class Clean {
     /**
-     * If undefined or empty, return 'invalid', else return the term.
-     * @param term The Search Term input from the user.
+     * If undefined or empty, return 'invalid', else return the input string.
+     * @param input The input string from the user.
      */
-    static search(term: string | undefined) : string {
-        if (term === undefined || term === '') {
-            vscode.window.showErrorMessage('Search term was empty or undefined.');
+    static input(input: string | undefined) : string {
+        if (input === undefined || input === '') {
+            vscode.window.showErrorMessage('Input was empty or undefined.');
             return 'invalid';
         }
 
-        return term;
+        return input;
     }
 }
 
