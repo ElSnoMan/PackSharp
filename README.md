@@ -1,8 +1,8 @@
 # Welcome to PackSharp
 
-PackSharp is an extension that makes working with .NET Core's CLI commands for Packages (NuGet) and Projects easier. It does this in two ways:
+PackSharp is an extension that makes working with .NET Core's `dotnet` CLI commands much easier.
 
-* Lists possible references so you can easily select which Package or Project to use
+* Visually lists possible options so you can easily select what you want to do.
 * Queries packages from the NuGet Repository so you can search and select the Package to use in a single command
 
 The extension is a palette of commands. Simply open the Command Palette (Shift + Command + P) and type 'packsharp' to begin.
@@ -12,9 +12,7 @@ The extension is a palette of commands. Simply open the Command Palette (Shift +
 ## Features
 Even though PackSharp abstracts complex logic behind the UI, each Palette Command will ultimately execute the appropriate `dotnet` CLI command in the integrated terminal.
 
-It is always helpful to see the actual CLI commands being run so you are familiarized with them, but also in case someone else isn't using VS Code.
-
-> There are two types of objects that PackSharp works with: _Package References_ and _Project References_.
+It is always helpful to see the actual CLI commands being run so you are familiarized with them, but also in case someone else isn't using VS Code or you have a more complex issue to solve.
 
 ----
 ## package.add
@@ -109,6 +107,10 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 
 * Bootstrap Selenium in a single command
 
-### 1.2.0
+### 1.2.1
 
 * Use Project filepaths instead of just their name.
+
+### 1.3.1
+
+* Easily create projects using the new Palette Command: `PackSharp: Create New Project`
