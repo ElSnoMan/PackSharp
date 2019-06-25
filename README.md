@@ -43,7 +43,7 @@ Return a list of NuGet Packages based on a search term.
 List Packages from the selected Project.
 
 * Palette Command => **PackSharp: List Packages**
-* Turns to CLI Command  => `$ dotnet list package [PROJECT]`
+* Turns to CLI Command  => `$ dotnet list [PROJECT] package`
 
 ----
 ## project.add
@@ -64,7 +64,7 @@ Remove a Project Reference from the selected Project.
 List the Project References from the selected Project.
 
 * Using Palette Command => **PackSharp: List Project References**
-* Turns to CLI Command  => `$ dotnet list reference [PROJECT]`
+* Turns to CLI Command  => `$ dotnet list [PROJECT] reference`
 
 ----
 ## bootstrap.selenium
