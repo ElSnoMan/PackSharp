@@ -69,6 +69,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	let list_packages_disposable = vscode.commands.registerCommand('extension.packsharp.package.list', async () => {
+		let csprojects = packer.getWorkspaceCsProjects();
+		let project_target_input = await vscode.window.showQuickPick(
+			csprojects.map(csproj => csproj.name),
+			{ placeHolder: 'The Project to list the Packages from' }
+		);
+
+		let csproj = csprojects.find(p => p.name === project_target_input);
+		packsharp.Terminal.send(`dotnet list ${csproj.filepath} package`);
+	});
+
 	let add_reference_disposable = vscode.commands.registerCommand('extension.packsharp.reference.add', async () => {
 		let csprojects = packer.getWorkspaceCsProjects();
 		let project_target_input = await vscode.window.showQuickPick(
@@ -105,6 +116,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		let reference = csproj.references.find(ref => ref.name === project_ref_to_remove);
 
 		packsharp.Terminal.send(`dotnet remove ${csproj.filepath} reference ${reference.filepath}`);
+	});
+
+	let list_references_disposable = vscode.commands.registerCommand('extension.packsharp.reference.list', async () => {
+		let csprojects = packer.getWorkspaceCsProjects();
+		let project_target_input = await vscode.window.showQuickPick(
+			csprojects.map(csproj => csproj.name),
+			{ placeHolder: 'The Project to list the References from' }
+		);
+
+		let csproj = csprojects.find(p => p.name === project_target_input);
+		packsharp.Terminal.send(`dotnet list ${csproj.filepath} reference`);
 	});
 
 	let bootstrap_selenium_disposable = vscode.commands.registerCommand('extension.packsharp.bootstrap.selenium', async () => {
@@ -154,8 +176,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push (
 		add_package_disposable,
 		remove_package_disposable,
+		list_packages_disposable,
 		add_reference_disposable,
 		remove_reference_disposable,
+		list_references_disposable,
 		query_packages_disposable,
 		bootstrap_selenium_disposable,
 		new_template_disposable

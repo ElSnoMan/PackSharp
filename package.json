@@ -2,7 +2,7 @@
 	"name": "packsharp",
 	"displayName": "PackSharp",
 	"description": "User-friendly Palette Commands to make using .NET Core's `dotnet` CLI commands much easier.",
-	"version": "1.3.1",
+	"version": "2.0.0",
 	"author": {
 		"name": "Carlos Kidman",
 		"email": "carlos@qap.dev",
@@ -24,8 +24,10 @@
 		"onCommand:extension.packsharp.package.add",
 		"onCommand:extension.packsharp.package.remove",
 		"onCommand:extension.packsharp.package.query",
+		"onCommand:extension.packsharp.package.list",
 		"onCommand:extension.packsharp.reference.add",
 		"onCommand:extension.packsharp.reference.remove",
+		"onCommand:extension.packsharp.reference.list",
 		"onCommand:extension.packsharp.bootstrap.selenium",
 		"onCommand:extension.packsharp.template.new"
 	],
@@ -45,12 +47,20 @@
 				"title": "PackSharp: Query Packages"
 			},
 			{
+				"command": "extension.packsharp.package.list",
+				"title": "PackSharp: List Packages"
+			},
+			{
 				"command": "extension.packsharp.reference.add",
 				"title": "PackSharp: Add Project Reference"
 			},
 			{
 				"command": "extension.packsharp.reference.remove",
 				"title": "PackSharp: Remove Project Reference"
+			},
+			{
+				"command": "extension.packsharp.reference.list",
+				"title": "PackSharp: List Project References"
 			},
 			{
 				"command": "extension.packsharp.bootstrap.selenium",

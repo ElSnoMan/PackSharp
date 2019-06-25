@@ -43,3 +43,10 @@ Now you can quickly make a Testing Project, ASP.NET Core Project, Solution or We
 ### Added
 - New Palette Command => `PackSharp: Create New Project`
 - Uses dotnet's templates to create what you need.
+
+## [2.0.0] - 2019-06-25
+New commands to list Packages or References of a selected Project
+
+### Added
+- New Palette Command => `PackSharp: List Packages`
+- New Palette Command => `PackSharp: List References`

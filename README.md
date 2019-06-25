@@ -5,7 +5,10 @@ PackSharp is an extension that makes working with .NET Core's `dotnet` CLI comma
 * Visually lists possible options so you can easily select what you want to do.
 * Queries packages from the NuGet Repository so you can search and select the Package to use in a single command
 
-The extension is a palette of commands. Simply open the Command Palette (Shift + Command + P) and type 'packsharp' to begin.
+The extension is a palette of commands. Simply open the Command Palette and type 'packsharp' to begin.
+
+* Windows: CTRL + P
+* Mac: SHIFT + CMD + P
 
 ![Packsharp Commands in Command Palette](images/packsharp-commands.png)
 
@@ -36,6 +39,13 @@ Return a list of NuGet Packages based on a search term.
 * No CLI Command  => Prints the results to the terminal
 
 ----
+## package.list
+List Packages from the selected Project.
+
+* Palette Command => **PackSharp: List Packages**
+* Turns to CLI Command  => `$ dotnet list package [PROJECT]`
+
+----
 ## project.add
 Add a Project Reference to the selected Project.
 
@@ -48,6 +58,13 @@ Remove a Project Reference from the selected Project.
 
 * Using Palette Command => **PackSharp: Remove Project Reference**
 * Turns to CLI Command  => `$ dotnet remove [SELECTED_PROJECT] reference [PROJECT_TO_REMOVE]`
+
+----
+## project.list
+List the Project References from the selected Project.
+
+* Using Palette Command => **PackSharp: List Project References**
+* Turns to CLI Command  => `$ dotnet list reference [PROJECT]`
 
 ----
 ## bootstrap.selenium
@@ -114,3 +131,7 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 ### 1.3.1
 
 * Easily create projects using the new Palette Command: `PackSharp: Create New Project`
+
+### 2.0.0
+
+* List the Packages or References of a Project
