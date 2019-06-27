@@ -135,3 +135,7 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 ### 2.0.0
 
 * List the Packages or References of a Project
+
+### 2.1.0
+
+* PackSharp inputs and options displayed will now persist even if focus is moved away.
