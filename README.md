@@ -17,6 +17,8 @@ Even though PackSharp abstracts complex logic behind the UI, each Palette Comman
 
 It is always helpful to see the actual CLI commands being run so you are familiarized with them, but also in case someone else isn't using VS Code or you have a more complex issue to solve.
 
+* NOTE: All PackSharp commands are run from the **Workspace Root**. If you need a more complicated file structure, then you will need to run the dotnet CLI commands manually, as needed.
+
 ----
 ## package.add
 Add a NuGet Package to the selected Project.
