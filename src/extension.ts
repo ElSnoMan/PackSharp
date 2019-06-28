@@ -179,7 +179,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		let project_name_input = await vscode.window.showInputBox({
 			placeHolder: 'Example: PackSharp',
-			prompt: 'Enter the name you want to give the Project',
+			prompt: 'Enter the name you want to give the Project/Template',
 			ignoreFocusOut: true
 		});
 

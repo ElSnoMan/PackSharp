@@ -50,3 +50,11 @@ New commands to list Packages or References of a selected Project
 ### Added
 - New Palette Command => `PackSharp: List Packages`
 - New Palette Command => `PackSharp: List References`
+
+## [2.2.0] - 2019-06-28
+Remove a command and cleanup the Windows experience.
+
+## Changes
+- Removed `PackSharp: Query Packages` command
+- Removed `chmod` command for Windows users since it's not needed
+- Update docs to highlight the requirements needed to use all of PackSharp's functionality

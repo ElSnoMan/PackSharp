@@ -1,6 +1,6 @@
 # Welcome to PackSharp
 
-PackSharp is an extension that makes working with .NET Core's `dotnet` CLI commands much easier.
+PackSharp is an extension that makes working with .NET Core's `dotnet` package and reference CLI commands much easier.
 
 * Visually lists possible options so you can easily select what you want to do.
 * Queries packages from the NuGet Repository so you can search and select the Package to use in a single command
@@ -11,6 +11,12 @@ The extension is a palette of commands. Simply open the Command Palette and type
 * Mac: SHIFT + CMD + P
 
 ![Packsharp Commands in Command Palette](images/packsharp-commands.png)
+
+## Requirements
+
+* This is a VS Code extension, so it requires VS Code.
+* .NET Core v2.2 or greater. Not all commands will work as expected if you have a lower version of .NET Core.
+* (Recommended) C# Extension installed
 
 ## Features
 Even though PackSharp abstracts complex logic behind the UI, each Palette Command will ultimately execute the appropriate `dotnet` CLI command in the integrated terminal.
@@ -32,13 +38,6 @@ Remove a NuGet Package from the selected Project.
 
 * Using Palette Command => **PackSharp: Remove Package**
 * Turns to CLI Command  => `$ dotnet remove [PROJECT] package [PACKAGE_NAME]`
-
-----
-## package.query
-Return a list of NuGet Packages based on a search term.
-
-* Palette Command => **PackSharp: Query Packages**
-* No CLI Command  => Prints the results to the terminal
 
 ----
 ## package.list
@@ -95,21 +94,12 @@ The dotnet templates can be found at their [dotnet new](https://docs.microsoft.c
 * Turns CLI Command => `$ dotnet new [TEMPLATE] --name [NAME]`
 
 ----
-## Requirements
-
-* This is a VS Code extension, so it requires VS Code.
-* .NET Core v2.2 or greater
-* (Recommended) C# Extension installed
 
 ## Known Issues
 
-* PackSharp does not currently support other `dotnet` parameters like the "version" parameter in this example, `$ dotnet add [PROJECT] package [PACKAGE_NAME] --version 1.2.3`
+* PackSharp does not support other `dotnet` parameters like the "version" parameter in this example, `$ dotnet add [PROJECT] package [PACKAGE_NAME] --version 1.2.3`
 
-* The NuGet query will return **up to 20** results. Each query will display an Information Message with a URL you can use to view additional results if the top 20 are insufficient.
-
-* PackSharp is mainly tested in Unix environments. I will be making progress to ensure testing happens on Windows as well, but I expect there to be some issues there. Please report the issues on my email or on the repo.
-
-* PackSharp runs the `dotnet` commands from your **Workspace Root**. Keep this in mind as you use the Palette Commands. You may need to run the commands in the CLI using your file structure.
+* The NuGet queries will return **up to 20** results.
 
 ## Release Notes
 
@@ -141,3 +131,7 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 ### 2.1.0
 
 * PackSharp inputs and options displayed will now persist even if focus is moved away.
+
+### 2.2.0
+
+* Removed `PackSharp: Query Packages` command since this is done by `PackSharp: Add Package` already.
