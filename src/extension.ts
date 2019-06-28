@@ -62,23 +62,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	});
 
-	let query_packages_disposable = vscode.commands.registerCommand('extension.packsharp.package.query', async () => {
-		let search_term_input = await vscode.window.showInputBox(inputBoxOptions);
-		let search_term = packsharp.Clean.input(search_term_input);
-
-		if (search_term !== 'invalid') {
-			let query = `https://www.nuget.org/packages?q=${search_term}`;
-			let response = await axios.get(query);
-			let html = response.data;
-
-			let packages : packer.Package[] = packer.getPackages(html);
-			let packagesFoundMessage : string = packer.getPackagesFoundMessage(html);
-
-			packsharp.Terminal.printPackages(packages);
-			vscode.window.showInformationMessage(`${packagesFoundMessage}. Visit ${query} for more info`);
-		}
-	});
-
 	let list_packages_disposable = vscode.commands.registerCommand('extension.packsharp.package.list', async () => {
 		let csprojects = packer.getWorkspaceCsProjects();
 		let project_target_input = await vscode.window.showQuickPick(
@@ -223,7 +206,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		add_reference_disposable,
 		remove_reference_disposable,
 		list_references_disposable,
-		query_packages_disposable,
 		bootstrap_selenium_disposable,
 		new_template_disposable
 	);

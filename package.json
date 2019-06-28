@@ -2,7 +2,7 @@
 	"name": "packsharp",
 	"displayName": "PackSharp",
 	"description": "User-friendly Palette Commands to make using .NET Core's `dotnet` CLI commands much easier.",
-	"version": "2.1.2",
+	"version": "3.0.0",
 	"author": {
 		"name": "Carlos Kidman",
 		"email": "carlos@qap.dev",
@@ -23,7 +23,6 @@
 	"activationEvents": [
 		"onCommand:extension.packsharp.package.add",
 		"onCommand:extension.packsharp.package.remove",
-		"onCommand:extension.packsharp.package.query",
 		"onCommand:extension.packsharp.package.list",
 		"onCommand:extension.packsharp.reference.add",
 		"onCommand:extension.packsharp.reference.remove",
@@ -41,10 +40,6 @@
 			{
 				"command": "extension.packsharp.package.remove",
 				"title": "PackSharp: Remove Package"
-			},
-			{
-				"command": "extension.packsharp.package.query",
-				"title": "PackSharp: Query Packages"
 			},
 			{
 				"command": "extension.packsharp.package.list",
