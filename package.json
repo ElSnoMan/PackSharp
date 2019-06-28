@@ -2,7 +2,7 @@
 	"name": "packsharp",
 	"displayName": "PackSharp",
 	"description": "User-friendly Palette Commands to make using .NET Core's `dotnet` CLI commands much easier.",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"author": {
 		"name": "Carlos Kidman",
 		"email": "carlos@qap.dev",

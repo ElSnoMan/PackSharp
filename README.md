@@ -7,7 +7,7 @@ PackSharp is an extension that makes working with .NET Core's `dotnet` CLI comma
 
 The extension is a palette of commands. Simply open the Command Palette and type 'packsharp' to begin.
 
-* Windows: CTRL + P
+* Windows: SHIFT + CTRL + P
 * Mac: SHIFT + CMD + P
 
 ![Packsharp Commands in Command Palette](images/packsharp-commands.png)
