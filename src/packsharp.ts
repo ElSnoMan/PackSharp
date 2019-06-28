@@ -64,8 +64,5 @@ export class Terminal {
         if (process.platform === 'darwin' || 'linux') {
 			this.send(`chmod +x ${driverDirectory}/chromedriver`);
 		}
-		if (process.platform === 'win32') {
-			this.send(`chmod +x ${driverDirectory}/chromedriver.exe`);
-		}
     }
 }
