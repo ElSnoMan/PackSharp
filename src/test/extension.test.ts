@@ -103,13 +103,13 @@ suite("Selenium", async () => {
         let zip = new zipper(response.data);
         zip.extractAllTo('/users/carlos/downloads/');
 
-        // chmod to turn text file to unix executable
+        // chmod to turn text file to unix executable // doesn't work on Windows
         return packsharp.Terminal.send(`chmod +x /users/carlos/downloads/chromedriver`);
     });
 
     test('get chromedriver latest stable version', async () => {
         let version = await selenium.getLatestStableReleaseVersion();
-        assert.equal(version, '74.0.3729.6');
+        assert.equal(version, '75.0.3770.90');
     });
 
     test('get chromedriver based on OS platform', () => {
