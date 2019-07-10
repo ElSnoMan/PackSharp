@@ -161,7 +161,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			let version_downloaded = await selenium.downloadChromeTo(driver_directory);
 
 			vscode.window.showInformationMessage(
-				`Latest Stable Version of Chromedriver (v${version_downloaded}) was installed in the "/_drivers" directory`
+				`Chromedriver (v${version_downloaded}) was installed in the "/_drivers" directory`
 			);
 
 			packsharp.Terminal.chmodDriverZip(driver_directory);

@@ -61,8 +61,11 @@ export class Terminal {
      * @param driverDirectory The directory that has the driver text file.
      */
     static chmodDriverZip(driverDirectory: string) : void {
-        if (process.platform === 'darwin' || 'linux') {
+        if (process.platform === 'darwin' || process.platform === 'linux') {
 			this.send(`chmod +x ${driverDirectory}/chromedriver`);
-		}
+        }
+        else {
+            // do nothing since `chmod` isn't required on Windows
+        }
     }
 }
