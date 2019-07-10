@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as packer from './packer';
 import * as packsharp from './packsharp';
 import * as selenium from './selenium';
+import { platform } from 'os';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -158,13 +159,13 @@ export async function activate(context: vscode.ExtensionContext) {
 			packsharp.Terminal.send(`dotnet add ${csproj.filepath} package Selenium.Support`);
 
 			let driver_directory = vscode.workspace.rootPath + '/_drivers';
-			let version_downloaded = await selenium.downloadChromeTo(driver_directory);
+			let version_downloaded = await selenium.downloadChromeTo(driver_directory, process.platform);
 
 			vscode.window.showInformationMessage(
 				`Chromedriver (v${version_downloaded}) was installed in the "/_drivers" directory`
 			);
 
-			packsharp.Terminal.chmodDriverZip(driver_directory);
+			packsharp.Terminal.chmodDriverZip(driver_directory, process.platform);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");

@@ -112,9 +112,22 @@ suite("Selenium", async () => {
         assert.equal(version, '75.0.3770.90');
     });
 
-    test('get chromedriver based on OS platform', () => {
-        let platform_zip = selenium.getZipByPlatform();
+    test('get chromedriver based on Mac OS platform', () => {
+        let platform_zip = selenium.getZipByPlatform(process.platform);
         assert.equal(process.platform, 'darwin');
         assert.equal(platform_zip, selenium.CHROMEDRIVER_ZIP_MAC);
+    });
+
+    test('get chromedriver based on Windows platform', () => {
+        let platform = 'win32';
+        let platform_zip = selenium.getZipByPlatform(platform);
+        assert.equal(platform_zip, selenium.CHROMEDRIVER_ZIP_WIN);
+        assert.equal(packsharp.Terminal.chmodDriverZip('', platform), 'windows');
+    });
+
+    test('get chromedriver based on Linux platform', () => {
+        let platform = 'linux';
+        let platform_zip = selenium.getZipByPlatform(platform);
+        assert.equal(platform_zip, selenium.CHROMEDRIVER_ZIP_LINUX);
     });
 });

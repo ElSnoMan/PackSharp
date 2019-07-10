@@ -60,12 +60,14 @@ export class Terminal {
      * Send `chmod` command to turn the driver text file to an executable.
      * @param driverDirectory The directory that has the driver text file.
      */
-    static chmodDriverZip(driverDirectory: string) : void {
-        if (process.platform === 'darwin' || process.platform === 'linux') {
-			this.send(`chmod +x ${driverDirectory}/chromedriver`);
+    static chmodDriverZip(driverDirectory: string, platform: string) : string {
+        if (platform === 'darwin' || platform === 'linux') {
+            this.send(`chmod +x ${driverDirectory}/chromedriver`);
+            return 'chmod';
         }
         else {
             // do nothing since `chmod` isn't required on Windows
+            return 'windows';
         }
     }
 }
