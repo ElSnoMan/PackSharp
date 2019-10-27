@@ -109,7 +109,7 @@ suite("Selenium", async () => {
 
     test('get chromedriver latest stable version', async () => {
         let version = await selenium.getLatestStableReleaseVersion();
-        assert.equal(version, '75.0.3770.90');
+        assert.equal(version, '78.0.3904.70');
     });
 
     test('get chromedriver based on Mac OS platform', () => {

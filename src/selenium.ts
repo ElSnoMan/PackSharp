@@ -37,11 +37,12 @@ export async function getLatestStableReleaseVersion() : Promise<string> {
     let li_elements : any[] = soup.findAll('li');
     let version : string;
 
-    li_elements.some((element) => {
-        if (element.text.includes("Latest stable release")) {
-            let split = element.text.split(/(\s+)/);
+    li_elements.forEach((element) => {
+        // Find element text of "Latest stable release: ChromeDriver 78.0.3904.70"
+        // and return only version of "78.0.3904.70"
+        if (element.text.includes("Latest")) {
+            let split = element.text.split(" ");
             version = split.pop();
-            return true;
         }
     });
 
