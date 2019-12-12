@@ -58,3 +58,11 @@ Remove a command and cleanup the Windows experience.
 - Removed `PackSharp: Query Packages` command
 - Removed `chmod` command for Windows users since it's not needed
 - Update docs to highlight the requirements needed to use all of PackSharp's functionality
+
+## [2.3.0] - 2019-12-12
+https://chromedriver.chromium.org changed page structure, so Latest Stable Version detection was updated.
+
+## Changes
+- Updated unit tests
+- Latest Stable Version detection mechanism updated
+- Upgraded a couple packages to resolve security vulnerabilities

@@ -85,6 +85,8 @@ This one command will bootstrap Selenium to the selected Project. It's never bee
     3. Start using Selenium!
         * Just point the `ChromeDriver()` to `/_drivers` and you're good to go!
 
+    > NOTE: This downloads the Latest Stable Version of chromedriver
+
 ----
 ## template.new
 Create a Project, Config, or Solution with a simple command.
@@ -135,3 +137,7 @@ With the initial release of PackSharp, all questions and feedback are welcome! P
 ### 2.2.0
 
 * Removed `PackSharp: Query Packages` command since this is done by `PackSharp: Add Package` already.
+
+### 2.3.0
+
+* `PackSharp: Bootstrap Selenium` command: Latest Stable Version detection mechanism updated

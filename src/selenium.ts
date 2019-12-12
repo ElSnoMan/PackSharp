@@ -34,14 +34,15 @@ export async function downloadChromeTo(directory: string, platform: string) : Pr
 export async function getLatestStableReleaseVersion() : Promise<string> {
     let response = await axios.get('http://chromedriver.chromium.org/');
     let soup = new JSSoup(response.data);
-    let li_elements : any[] = soup.findAll('li');
+    let spans : any[] = soup.findAll('span');
     let version : string;
 
-    li_elements.forEach((element) => {
+    spans.forEach((span) => {
         // Find element text of "Latest stable release: ChromeDriver 78.0.3904.70"
         // and return only version of "78.0.3904.70"
-        if (element.text.includes("Latest")) {
-            let split = element.text.split(" ");
+        if (span.text.includes("Latest stable")) {
+            let anchor = span.nextSibling.nextSibling;
+            let split = anchor.text.split(" ");
             version = split.pop();
         }
     });
