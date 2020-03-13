@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			);
 
 			if (csproj !== undefined) {
-				packsharp.Terminal.send(`dotnet add ${csproj.filepath} package ${package_target_input}`);
+				packsharp.Terminal.send(`dotnet add "${csproj.filepath}" package ${package_target_input}`);
 			}
 			else {
 				vscode.window.showErrorMessage("A Project was not selected. Could not add " + package_target_input);
@@ -55,7 +55,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				{ placeHolder: 'The Package to remove', ignoreFocusOut: true }
 			);
 
-			packsharp.Terminal.send(`dotnet remove ${csproj.filepath} package ${package_pick_input}`);
+			packsharp.Terminal.send(`dotnet remove "${csproj.filepath}" package ${package_pick_input}`);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");
@@ -73,7 +73,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let csproj = csprojects.find(p => p.name === project_target_input);
 
 		if (csproj !== undefined) {
-			packsharp.Terminal.send(`dotnet list ${csproj.filepath} package`);
+			packsharp.Terminal.send(`dotnet list "${csproj.filepath}" package`);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");
@@ -97,7 +97,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				{ placeHolder: 'The Project Reference to add', ignoreFocusOut: true }
 			);
 
-			packsharp.Terminal.send(`dotnet add ${csproj.filepath} reference ${project_source_input}`);
+			packsharp.Terminal.send(`dotnet add "${csproj.filepath}" reference ${project_source_input}`);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");
@@ -121,7 +121,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 			let reference = csproj.references.find(ref => ref.name === project_ref_to_remove);
 
-			packsharp.Terminal.send(`dotnet remove ${csproj.filepath} reference ${reference.filepath}`);
+			packsharp.Terminal.send(`dotnet remove "${csproj.filepath}" reference "${reference.filepath}"`);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");
@@ -138,7 +138,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		let csproj = csprojects.find(p => p.name === project_target_input);
 
 		if (csproj !== undefined) {
-			packsharp.Terminal.send(`dotnet list ${csproj.filepath} reference`);
+			packsharp.Terminal.send(`dotnet list "${csproj.filepath}" reference`);
 		}
 		else {
 			vscode.window.showErrorMessage("A Project was not selected.");
@@ -155,8 +155,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		let csproj = csprojects.find(p => p.name === project_target_input);
 
 		if (csproj !== undefined) {
-			packsharp.Terminal.send(`dotnet add ${csproj.filepath} package Selenium.WebDriver`);
-			packsharp.Terminal.send(`dotnet add ${csproj.filepath} package Selenium.Support`);
+			packsharp.Terminal.send(`dotnet add "${csproj.filepath}" package Selenium.WebDriver`);
+			packsharp.Terminal.send(`dotnet add "${csproj.filepath}" package Selenium.Support`);
 
 			let driver_directory = vscode.workspace.rootPath + '/_drivers';
 			let version_downloaded = await selenium.downloadChromeTo(driver_directory, process.platform);
