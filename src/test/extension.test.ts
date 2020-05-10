@@ -101,7 +101,7 @@ suite("Selenium", async () => {
         });
 
         let zip = new zipper(response.data);
-        zip.extractAllTo('/users/carlos/downloads/');
+        zip.extractAllTo('/users/carloskidman/downloads/');
 
         // chmod to turn text file to unix executable // doesn't work on Windows
         return packsharp.Terminal.send(`chmod +x /users/carlos/downloads/chromedriver`);
@@ -111,7 +111,7 @@ suite("Selenium", async () => {
         let version = await selenium.getLatestStableReleaseVersion();
         assert.notEqual(version, '');
         assert.notEqual(version, undefined);
-        assert.equal(version, '79.0.3945.36');
+        assert.equal(version, '81.0.4044.138');
     });
 
     test('get chromedriver based on Mac OS platform', () => {

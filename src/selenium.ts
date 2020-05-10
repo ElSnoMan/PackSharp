@@ -32,22 +32,14 @@ export async function downloadChromeTo(directory: string, platform: string) : Pr
 }
 
 export async function getLatestStableReleaseVersion() : Promise<string> {
-    let response = await axios.get('http://chromedriver.chromium.org/');
-    let soup = new JSSoup(response.data);
-    let spans : any[] = soup.findAll('span');
-    let version : string;
+    const response = await axios.get('http://chromedriver.storage.googleapis.com/LATEST_RELEASE');
 
-    spans.forEach((span) => {
-        // Find element text of "Latest stable release: ChromeDriver 78.0.3904.70"
-        // and return only version of "78.0.3904.70"
-        if (span.text.includes("Latest stable")) {
-            let anchor = span.nextSibling.nextSibling;
-            let split = anchor.text.split(" ");
-            version = split.pop();
-        }
-    });
-
-    return version;
+    if (response.status === 200) {
+        return response.data;
+    }
+    else {
+        throw new Error('Could not get the Latest Stable Version. Try installing chromedriver manually.');
+    }
 }
 
 export function getZipByPlatform(platform: string) : string {
